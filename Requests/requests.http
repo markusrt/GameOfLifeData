@@ -1,0 +1,21 @@
+### Variables
+# Uncomment the matching @url your current deployment setting!
+
+# Local deployment
+@url = http://localhost:7071
+
+### Store game state
+POST {{url}}/api/game/myGameId HTTP/1.1
+content-type: application/json
+
+<@ ./gamestate.json
+
+### Invalid game state returns 400
+POST {{url}}/api/game/myGameId HTTP/1.1
+content-type: application/json
+
+<@ ./invalid-gamestate.json
+
+
+### Get game state
+GET {{url}}/api/game/myGameId HTTP/1.1
