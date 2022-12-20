@@ -8,9 +8,6 @@ R.Engine.define({
 
 /**
  * @class Game of Life
- *
- * Interesting seeds:
- *      4001389056
  */
 var GameOfLife = function () {
     return R.engine.Game.extend({
@@ -51,14 +48,16 @@ var GameOfLife = function () {
             GameOfLife.initWorld(
                 30, //R.engine.Support.getNumericParam('width', 30),
                 30, //R.engine.Support.getNumericParam('height', 30),
+                R.engine.Support.getNumericParam('delay', 2000),
                 R.engine.Support.getStringParam('game', 'defaultGame'));
 
             GameOfLife.checkbox = $("input.pause");
         },
 
-        initWorld: function(worldWidth, worldHeight, gameId) {
+        initWorld: function(worldWidth, worldHeight, delay, gameId) {
             GameOfLife.elapsed = 0;
             GameOfLife.gameId = gameId;
+            GameOfLife.delay = delay;
             GameOfLife.worldWidth = worldWidth;
             GameOfLife.worldHeight = worldHeight;
             GameOfLife.cellWidth = Math.floor(GameOfLife.playWidth / GameOfLife.worldWidth);
@@ -79,10 +78,10 @@ var GameOfLife = function () {
             $("head").append(styles);
 
             GameOfLife.world = [];
-            GameOfLife.load().then(GameOfLife.initPlayField);
+            GameOfLife.load().then(GameOfLife.draw);
         },
 
-        initPlayField: function () {
+        draw: function () {
             for (var cell = 0; cell < GameOfLife.worldWidth * GameOfLife.worldHeight; cell++) {
                 var cellState = GameOfLife.data[cell];
                 GameOfLife.world[cell] = {
@@ -93,7 +92,6 @@ var GameOfLife = function () {
             GameOfLife.xDivisions = GameOfLife.worldWidth;
             GameOfLife.yDivisions = GameOfLife.worldHeight;
 
-            // Draw out the cells
             var world = $("<div class='world'>");
             for (cell = 0; cell < GameOfLife.world.length; cell++) {
                 world.append(GameOfLife.world[cell].element);
@@ -107,6 +105,18 @@ var GameOfLife = function () {
 
             for (var x = 0; x < 8; x++) {
                 GameOfLife.surroundingCells[x] = R.math.Point2D.create(0,0);
+            }
+        },
+        
+        redraw: function () {
+            for (cell = 0; cell < GameOfLife.world.length; cell++) {
+                if (GameOfLife.data[cell] == GameOfLife.DEAD_CELL) {
+                    GameOfLife.world[cell].element.removeClass("alive").addClass("dead");
+                    GameOfLife.world[cell].state = GameOfLife.DEAD_CELL;
+                } else if (GameOfLife.data[cell] == GameOfLife.LIVE_CELL) {
+                    GameOfLife.world[cell].element.addClass("alive").removeClass("dead");
+                    GameOfLife.world[cell].state = GameOfLife.LIVE_CELL;
+                }
             }
         },
 
@@ -171,27 +181,14 @@ var GameOfLife = function () {
             if (GameOfLife.checkbox[0].checked && !GameOfLife.doStep) {
                 return;
             }
-            if (GameOfLife.elapsed < 2000 && !GameOfLife.doStep) {
+            if (GameOfLife.elapsed < GameOfLife.delay && !GameOfLife.doStep) {
                 GameOfLife.elapsed += dt;
                 return;
             }
 
             GameOfLife.elapsed = 0;
             GameOfLife.doStep = false;
-                        GameOfLife.load().then(_ => GameOfLife.redraw());
-        },
-
-        redraw: function () {
-            for (cell = 0; cell < GameOfLife.world.length; cell++) {
-                if (GameOfLife.data[cell] == GameOfLife.DEAD_CELL) {
-                    GameOfLife.world[cell].element.removeClass("alive").addClass("dead");
-                    GameOfLife.world[cell].state = GameOfLife.DEAD_CELL;
-                } else if (GameOfLife.data[cell] == GameOfLife.LIVE_CELL) {
-                    GameOfLife.world[cell].element.addClass("alive").removeClass("dead");
-                    GameOfLife.world[cell].state = GameOfLife.LIVE_CELL;
-                }
-            }
+            GameOfLife.load().then(GameOfLife.redraw);
         }
-
     });
 };
