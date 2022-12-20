@@ -15,6 +15,9 @@ namespace GameOfLifeDataTests
         [Test]
         public async Task RetrieveGameState_ReturnsDummyData()
         {
+            var version = new Version(280, 280, 280, Int16.MaxValue);
+
+            version.ToString().Should().Be("280.280.280.280");
             var logger = Substitute.For<ILogger<Game>>();
             var request = CreateMockRequest(null);
             var sut = new Game(logger);
