@@ -109,8 +109,9 @@ var GameOfLife = function () {
             }
 
             $("body", document).append(world)
+                .append("<div>API: <a href=\"./swagger\">Swagger/OpenAPI</a>")
                 .append("<div>URL parameters <ul><li>game: <i>yourGameName</i></li><li>color: <b>true</b>/false</li><li>delay: <i>milliseconds between redraw (default is 2000)</li></ul></div>")
-                .append("<div>e.g. <a href=\"https://game-of-life-di.azurewebsites.net?game=myPersonalGame&color=false&delay=500\">https://game-of-life-di.azurewebsites.net?game=myPersonalGame&color=false&delay=500</a>")
+                .append("<div>e.g. <a href=\"https://game-of-life-di.azurewebsites.net?game=myPersonalGame&color=false&delay=500\">https://game-of-life-di.azurewebsites.net?game=myPersonalGame&color=false&delay=500</a>");
 
 
             world.click(function(ev) {
