@@ -46,7 +46,7 @@ var GameOfLife = function () {
             GameOfLife.initWorld(
                 30, //R.engine.Support.getNumericParam('width', 30),
                 30, //R.engine.Support.getNumericParam('height', 30),
-                R.engine.Support.getNumericParam('delay', 2000),
+                R.engine.Support.getNumericParam('delay', 500),
                 R.engine.Support.getStringParam('color', "true"),
                 R.engine.Support.getStringParam('game', 'defaultGame'));
 
@@ -62,7 +62,6 @@ var GameOfLife = function () {
             GameOfLife.cellWidth = Math.floor(GameOfLife.playWidth / GameOfLife.worldWidth);
             GameOfLife.cellHeight = Math.floor(GameOfLife.playHeight / GameOfLife.worldHeight);
 
-            // Drop a few dynamic styles
             var cellStyle = 'div.cell { width: ' + GameOfLife.cellWidth + 'px; height: ' + GameOfLife.cellHeight + 'px; ' +
                 'float: left; position: relative; padding: 0; margin: 0; line-height: 7px; border-top: 1px solid; ' +
                 'border-left: 1px solid; } ';
@@ -110,9 +109,8 @@ var GameOfLife = function () {
 
             $("body", document).append(world)
                 .append("<div>API: <a href=\"./swagger\">Swagger/OpenAPI</a>")
-                .append("<div>URL parameters <ul><li>game: <i>yourGameName</i></li><li>color: <b>true</b>/false</li><li>delay: <i>milliseconds between redraw (default is 2000)</li></ul></div>")
+                .append("<div>URL parameters <ul><li>game: <i>yourGameName</i></li><li>color: <b>true</b>/false</li><li>delay: <i>milliseconds between redraw (default is 500)</li></ul></div>")
                 .append("<div>e.g. <a href=\"https://game-of-life-di.azurewebsites.net?game=myPersonalGame&color=false&delay=500\">https://game-of-life-di.azurewebsites.net?game=myPersonalGame&color=false&delay=500</a>");
-
 
             world.click(function(ev) {
                 GameOfLife.createCell(ev);
