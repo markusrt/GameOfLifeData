@@ -1,7 +1,7 @@
 <!doctype html>
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
    <head>
-      <title>The Render Engine - Conway's Game of Life</title>
+      <title>WSA - Game of Life Visualizer</title>
 
       <!-- Load the main engine script -->
       <script type="text/javascript" src="js/engine/runtime/engine.js"></script>
@@ -11,10 +11,10 @@
       <script type="text/javascript">
           // Load the game script
           $(document).ready(function() {
-              R.loadGame('game.js', 'GameOfLife', 'Conway\'s Game of Life');
+              R.loadGame('game.js', 'GameOfLife', 'WSA - Game of Life Visualizer');
           });
       </script>
-        <input type="checkbox" class="pause" name="pause" checked="checked"/> Pause Simulation
-        <input type="button" onclick="GameOfLife.step()" value="Step" name="step"/>
+      <input type="checkbox" class="pause" name="pause" checked="checked"/> Pause Simulation
+      <input type="button" onclick="GameOfLife.step()" value="Step" name="step"/>
    </body>
 </html>

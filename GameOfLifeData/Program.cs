@@ -1,16 +1,7 @@
 var gameStates = new Dictionary<string,int[]>();
 var builder = WebApplication.CreateBuilder(args);
 
-
 var app = builder.Build();
-
-// Configure the HTTP request pipeline.
-if (!app.Environment.IsDevelopment())
-{
-    app.UseExceptionHandler("/Error");
-    // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
-    app.UseHsts();
-}
 
 app.UseDefaultFiles();
 app.UseStaticFiles(new StaticFileOptions
@@ -19,22 +10,28 @@ app.UseStaticFiles(new StaticFileOptions
     DefaultContentType = "text/plain"
 });
 
-app.UseRouting();
+app.MapGet("/api/game/{gameId}", GetGameById);
+app.MapPost("/api/game/{gameId}", UpdateGameById);
 
-app.MapGet("/api/game/{gameId}", 
-    (string gameId) =>
-    {
-        if (!gameStates.ContainsKey(gameId))
-        {
-            gameStates.Add(gameId, new int[30*30]);
-        }
-        return gameStates[gameId];
-    });
+int[] GetGameById(string gameId)
+{
+    EnsureGameExists(gameId);
+    return gameStates[gameId];
+}
 
-app.MapPost("/api/game/{gameId}", (string gameId, int[] gameState) => 
+IResult UpdateGameById(string gameId, int[] gameState)
+{
+    EnsureGameExists(gameId);
+    gameStates[gameId] = gameState;
+    return Results.NoContent(); 
+}
+
+void EnsureGameExists(string gameId)
+{
+    if (!gameStates.ContainsKey(gameId))
     {
-        gameStates[gameId] = gameState;
-        return Results.NoContent(); 
-    });
+        gameStates.Add(gameId, new int[30 * 30]);
+    }
+}
 
 app.Run();
