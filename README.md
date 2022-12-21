@@ -1,3 +1,3 @@
 # Game of life data
 
-Azure function to store and retrieve game state data data for game of life
+NET 7 minimal API backend and JS visualizer for Conway's Game of Life

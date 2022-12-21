@@ -1,8 +1,7 @@
 name: Build and deploy .NET Core application to Web App game-of-life-di
 on:
   push:
-    branches:
-    - switchToNetCore
+    branches: [ "main" ]
 env:
   AZURE_WEBAPP_NAME: game-of-life-di
   AZURE_WEBAPP_PACKAGE_PATH: GameOfLifeData/published
